@@ -99,11 +99,16 @@ libraryList.push(bla);
 libraryList.push(bla2);
 libraryList.push(bla3);
 
+addBookButton.addEventListener("click", (e) => {
+    if(addBookMenu.style.visibility == "hidden") {
+        addBookMenu.style.visibility = "visible";
+        addBookButton.textContent = "Close";
+    } else {
+        addBookMenu.style.visibility = "hidden";
+        addBookButton.textContent = "Add Book";
+    }
+});
 
 libraryList.forEach((item) => {
     bookContainer.appendChild(makeBookNode(item));
-});
-
-addBookButton.addEventListener("click", (e) => {
-    addBookMenu.style.visibility = "visible";
 });
