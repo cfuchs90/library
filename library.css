@@ -1,0 +1,14 @@
+.book-container {
+    padding: 1em;
+    border: 1px solid sienna;
+}
+
+.book {
+    padding: 1em;
+}
+
+.book h1 {
+    color: black;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
