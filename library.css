@@ -1,10 +1,16 @@
 .book-container {
+    display: flex;
     padding: 1em;
-    border: 1px solid sienna;
+    background-color: lightgray;
 }
 
 .book {
+    margin-left: .8em;
     padding: 1em;
+    border: 1px solid black;
+    background-color: whitesmoke;
+    border-radius: 8px;
+
 }
 
 .book h1 {
@@ -12,3 +18,35 @@
     font-weight: bolder;
     font-size: 1.2em;
 }
+
+.book p {
+    margin: 0.2em;
+}
+
+.add-book-area {
+    margin: 2em;
+    width: 200px;
+}
+
+.add-book-menu {
+    visibility: hidden;
+}
+
+.add-book-menu form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.add-book-menu form * {
+    margin: 0.2em;
+}
+
+
+/* .add-book-menu form input[type=checkbox] {
+} */
+
+.add-book-menu label {
+    display: block;
+}
+

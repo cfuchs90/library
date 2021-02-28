@@ -60,11 +60,20 @@ function makeBookNode(book) {
     let bookAuthorNode = document.createElement("p");
     let bookPagesNode = document.createElement("p");
     let bookReadNode = document.createElement("p");
+    let readSpan = document.createElement("span");
 
-    bookTitleNode.textContent = book.getTitle();
-    bookAuthorNode.textContent = book.getAuthor();
-    bookPagesNode.textContent = book.getPages();
-    bookReadNode.textContent = book.getReadStatus();
+    bookTitleNode.textContent = "Title: " + book.getTitle();
+    bookAuthorNode.textContent = "Author: " + book.getAuthor();
+    bookPagesNode.textContent = "Pages: " + book.getPages();
+    bookReadNode.textContent = "Read: ";
+
+    if(book.getReadStatus()){
+        readSpan.innerHTML = "&#10004;";
+    } else {
+        readSpan.innerHTML = "&#x2717;";
+    }
+
+    bookReadNode.appendChild(readSpan);
 
     bookDom.appendChild(bookTitleNode);
     bookDom.appendChild(bookAuthorNode);
@@ -76,13 +85,25 @@ function makeBookNode(book) {
 }
 
 const bookContainer = document.querySelector(".book-container");
+const addBookMenu = document.querySelector(".add-book-menu");
+const addBookButton = document.querySelector("#add-book");
 let libraryList = [];
 
 bla = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
+bla2 = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
+bla3 = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
+
+bla2.setReadStatus();
+
+libraryList.push(bla);
+libraryList.push(bla2);
+libraryList.push(bla3);
 
 
-libraryList.push(bla);
-libraryList.push(bla);
-libraryList.push(bla);
-libraryList.push(bla);
-bookContainer.appendChild(makeBookNode(bla));
+libraryList.forEach((item) => {
+    bookContainer.appendChild(makeBookNode(item));
+});
+
+addBookButton.addEventListener("click", (e) => {
+    addBookMenu.style.visibility = "visible";
+});
