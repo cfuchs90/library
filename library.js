@@ -3,7 +3,7 @@ class Book {
         this.title = title;
         this.author = author;
         this.pages = pages;
-        this.read = false;
+        this.read = read;
     }
 
     print_info() {
@@ -52,63 +52,110 @@ class Book {
     }
 }
 
-function makeBookNode(book) {
-    let bookDom = document.createElement("div");
-    bookDom.classList.add("book");
+let Library = (function() {
+    let libraryContents = [];
 
-    let bookTitleNode = document.createElement("h1");
-    let bookAuthorNode = document.createElement("p");
-    let bookPagesNode = document.createElement("p");
-    let bookReadNode = document.createElement("p");
-    let readSpan = document.createElement("span");
+    addBook = function(title, author, pages, read) {
+        let newBookTitle = title;
+        let newBookAuthor = author;
+        let newBookPages = pages;
+        let newBookRead = read;
 
-    bookTitleNode.textContent = "Title: " + book.getTitle();
-    bookAuthorNode.textContent = "Author: " + book.getAuthor();
-    bookPagesNode.textContent = "Pages: " + book.getPages();
-    bookReadNode.textContent = "Read: ";
+        let newBook = new Book(newBookTitle, newBookAuthor, newBookPages, newBookRead);
 
-    if(book.getReadStatus()){
-        readSpan.innerHTML = "&#10004;";
-    } else {
-        readSpan.innerHTML = "&#x2717;";
+        libraryContents.push(newBook); 
     }
 
-    bookReadNode.appendChild(readSpan);
+    return ({libraryContents, addBook});
 
-    bookDom.appendChild(bookTitleNode);
-    bookDom.appendChild(bookAuthorNode);
-    bookDom.appendChild(bookPagesNode);
-    bookDom.appendChild(bookReadNode);
+})()
 
-    return bookDom;
+let LibraryDom = (function() {
+    const bookContainer = document.querySelector(".book-container");
+    const addBookMenu = document.querySelector(".add-book-menu");
+    const addBookButton = document.querySelector("#add-book");
 
-}
+    function makeBookNode(book) {
+        let bookDom = document.createElement("div");
+        bookDom.classList.add("book");
 
-const bookContainer = document.querySelector(".book-container");
-const addBookMenu = document.querySelector(".add-book-menu");
-const addBookButton = document.querySelector("#add-book");
-let libraryList = [];
+        let bookTitleNode = document.createElement("h1");
+        let bookAuthorNode = document.createElement("p");
+        let bookPagesNode = document.createElement("p");
+        let bookReadNode = document.createElement("p");
+        let readSpan = document.createElement("span");
 
-bla = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
-bla2 = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
-bla3 = new Book("Lord of the Rings", "JRR Tolkien", 422, false);
+        bookTitleNode.textContent = "Title: " + book.getTitle();
+        bookAuthorNode.textContent = "Author: " + book.getAuthor();
+        bookPagesNode.textContent = "Pages: " + book.getPages();
+        bookReadNode.textContent = "Read: ";
 
-bla2.setReadStatus();
+        if(book.getReadStatus()){
+            readSpan.innerHTML = "&#10004;";
+        } else {
+            readSpan.innerHTML = "&#x2717;";
+        }
 
-libraryList.push(bla);
-libraryList.push(bla2);
-libraryList.push(bla3);
+        bookReadNode.appendChild(readSpan);
 
-addBookButton.addEventListener("click", (e) => {
-    if(addBookMenu.style.visibility == "hidden") {
-        addBookMenu.style.visibility = "visible";
-        addBookButton.textContent = "Close";
-    } else {
-        addBookMenu.style.visibility = "hidden";
-        addBookButton.textContent = "Add Book";
+        bookDom.appendChild(bookTitleNode);
+        bookDom.appendChild(bookAuthorNode);
+        bookDom.appendChild(bookPagesNode);
+        bookDom.appendChild(bookReadNode);
+
+        return bookDom;
+
     }
+
+
+    deleteBookArea = function(bookContainer) {
+        while(bookContainer.lastChild) {
+            bookContainer.removeChild(bookContainer.lastChild);
+        }
+    }
+
+    renderBooks = function(library) {
+        if(bookContainer.hasChildNodes()) deleteBookArea(bookContainer)
+
+        library.forEach((item) => {
+            bookContainer.appendChild(makeBookNode(item));
+        });
+    }
+
+    //addBookButton.addEventListener("click", (e) => {
+    toggleMenuVisibility = function() {
+        if(addBookMenu.style.visibility == "visible") {
+            addBookMenu.style.visibility = "hidden";
+            addBookButton.textContent = "Add Book";
+        } else {
+            addBookMenu.style.visibility = "visible";
+            addBookButton.textContent = "Schließen";
+        }
+    }
+
+    showMenu = function() {
+        addBookButton.addEventListener("click", toggleMenuVisibility)
+    }
+
+    return({makeBookNode, renderBooks, showMenu});
+})()
+
+
+
+const addBookSubmit= document.querySelector("#new-book-submit");
+
+
+Library.addBook("Lord of the Rings", "JRR Tolkien", 422, false);
+Library.addBook("Lord of the Rings", "JRR Tolkien", 422, true);
+Library.addBook("Lord of the Rings", "JRR Tolkien", 422, false);
+
+
+addBookSubmit.addEventListener("click", (e) => {
+    // Library.addBook(libraryList);
+    LibraryDom.renderBooks(Library.libraryContents)
+    // renderBooks(libraryList, bookContainer);
 });
 
-libraryList.forEach((item) => {
-    bookContainer.appendChild(makeBookNode(item));
-});
+LibraryDom.showMenu();
+LibraryDom.renderBooks(Library.libraryContents);
+
