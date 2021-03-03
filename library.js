@@ -85,7 +85,7 @@ let LibraryDom = (function() {
         let bookReadNode = document.createElement("p");
         let readSpan = document.createElement("span");
 
-        bookTitleNode.textContent = "Title: " + book.getTitle();
+        bookTitleNode.textContent =  book.getTitle();
         bookAuthorNode.textContent = "Author: " + book.getAuthor();
         bookPagesNode.textContent = "Pages: " + book.getPages();
         bookReadNode.textContent = "Read: ";
