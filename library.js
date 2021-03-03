@@ -107,6 +107,23 @@ let LibraryDom = (function() {
 
     }
 
+    getNewBookInfo = function() {
+
+        const newBookTitle = document.querySelector("#new-book-title").value;
+        console.log(newBookTitle);
+        const newBookAuthor = document.querySelector("#new-book-author").value;
+        const newBookPages = document.querySelector("#new-book-pages").value;
+        const newBookRead = document.querySelector("#new-book-read").checked;
+
+        return([newBookTitle, newBookAuthor, newBookPages, newBookRead]);
+    }
+
+    clearNewBookMenu = function() {
+        const newBookTitle = document.querySelector("#new-book-title").value = "";
+        const newBookAuthor = document.querySelector("#new-book-author").value = "";
+        const newBookPages = document.querySelector("#new-book-pages").value = "";
+        const newBookRead = document.querySelector("#new-book-read").checked = "";
+    }
 
     deleteBookArea = function(bookContainer) {
         while(bookContainer.lastChild) {
@@ -133,11 +150,11 @@ let LibraryDom = (function() {
         }
     }
 
-    showMenu = function() {
+    toggleMenu = function() {
         addBookButton.addEventListener("click", toggleMenuVisibility)
     }
 
-    return({makeBookNode, renderBooks, showMenu});
+    return({renderBooks, toggleMenu, getNewBookInfo, clearNewBookMenu});
 })()
 
 
@@ -151,11 +168,13 @@ Library.addBook("Lord of the Rings", "JRR Tolkien", 422, false);
 
 
 addBookSubmit.addEventListener("click", (e) => {
-    // Library.addBook(libraryList);
+    e.preventDefault();
+    Library.addBook(...LibraryDom.getNewBookInfo());
+    LibraryDom.clearNewBookMenu();
     LibraryDom.renderBooks(Library.libraryContents)
     // renderBooks(libraryList, bookContainer);
 });
 
-LibraryDom.showMenu();
+LibraryDom.toggleMenu();
 LibraryDom.renderBooks(Library.libraryContents);
 
